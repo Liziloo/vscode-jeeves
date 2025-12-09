@@ -1,0 +1,82 @@
+{
+  "name": "jeeves-sidebar",
+  "displayName": "Jeeves Sidebar",
+  "description": "A friendly local AI assistant living inside the VS Code sidebar.",
+  "publisher": "Liziloo",
+  "version": "0.1.0",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": ["Other"],
+  "main": "./out/extension.js",
+  "license": "MIT",
+
+  "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "jeevesContainer",
+          "title": "Jeeves",
+          "icon": "media/icon.svg"
+        }
+      ]
+    },
+    "views": {
+      "jeevesContainer": [
+        {
+          "id": "jeevesView",
+          "name": "Ask Jeeves",
+          "type": "webview"
+        }
+      ]
+    },
+
+    "commands": [
+      {
+        "command": "jeeves.askAboutSelection",
+        "title": "Ask Jeeves About This Code"
+      }
+    ],
+
+    "menus": {
+      "editor/context": [
+        {
+          "when": "editorHasSelection",
+          "command": "jeeves.askAboutSelection",
+          "group": "navigation"
+        }
+      ]
+    },
+
+    "configuration": {
+      "type": "object",
+      "title": "Jeeves Settings",
+      "properties": {
+        "jeeves.serverUrl": {
+          "type": "string",
+          "default": "http://localhost:8140/ask",
+          "description": "URL of your Jeeves AI server. (Use localhost to keep this public-safe.)"
+        },
+        "jeeves.temperature": {
+          "type": "number",
+          "default": 0.7,
+          "description": "Optional model creative temperature."
+        }
+      }
+    }
+  },
+
+  "scripts": {
+    "compile": "tsc -p .",
+    "package": "vsce package",
+    "version-patch": "npm version patch && git push --follow-tags",
+    "version-minor": "npm version minor && git push --follow-tags",
+    "version-major": "npm version major && git push --follow-tags"
+  },
+
+  "devDependencies": {
+    "@types/vscode": "^1.85.0",
+    "typescript": "^5.3.3",
+    "tslib": "^2.6.2"
+  }
+}
